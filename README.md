@@ -18,6 +18,7 @@ It's a simple yet effective solution to optimize the LearnDash interface and ele
 
 ## Screenshots
 1. Creating and Managing LMS Custom Tabs
+<img height="0" width="8px">
 <img width="45%" src="assets/screenshot-1.png" alt="Creating and Managing LMS Custom Tabs" title="Creating and Managing LMS Custom Tabs"></img>
 2. Editing and Updating Custom Tabs
 <img height="0" width="8px">
