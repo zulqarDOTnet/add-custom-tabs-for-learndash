@@ -42,4 +42,4 @@ It's a simple yet effective solution to optimize the LearnDash interface and ele
 ## License
 
 [![Author](https://img.shields.io/static/v1?label=author&message=Zulqarnain%20Zafar&color=green)](https://zulqar.net)
-[![License](https://img.shields.io/static/v1?label=license&message=GNU%20GENERAL%20PUBLIC%20LICENSE&color=red)](license.txt)
+[![License](https://img.shields.io/static/v1?label=license&message=GNU%20GENERAL%20PUBLIC%20LICENSE%20v3&color=red)](license.txt)
