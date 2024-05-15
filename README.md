@@ -18,7 +18,7 @@ It's a simple yet effective solution to optimize the LearnDash interface and ele
 
 ## Screenshots
 1. Creating and Managing LMS Custom Tabs
-<img height="0" width="8px">
+<img height="0" width="4px">
 <img width="45%" src="assets/screenshot-1.png" alt="Creating and Managing LMS Custom Tabs" title="Creating and Managing LMS Custom Tabs"></img>
 2. Editing and Updating Custom Tabs
 <img height="0" width="8px">
@@ -38,3 +38,8 @@ It's a simple yet effective solution to optimize the LearnDash interface and ele
 7. Custom Tab on Group Page
 <img height="0" width="8px">
 <img width="45%" src="assets/screenshot-7.png" alt="Custom Tab on Group Page" title="Custom Tab on Group Page"></img>
+
+## License
+
+[![Author](https://img.shields.io/static/v1?label=author&message=Zulqarnain%20Zafar&color=green)](https://zulqar.net)
+[![License](https://img.shields.io/static/v1?label=license&message=All%20Rights%20Reserved&color=red)](license.txt)
