@@ -1,3 +1,16 @@
+# OSX
+#
+.DS_Store
+
+# Misc.
+#
+.lh
+.history
+assets/banner-772x250.png
+assets/banner-1544x500.png
+assets/icon-128x128.png
+assets/icon-256x256.png
+
 # Wordpress - ignore core, configuration, examples, uploads and logs.
 # https://github.com/github/gitignore/blob/main/WordPress.gitignore
 
@@ -12,7 +25,6 @@
 /wp-content/themes/index.php
 /wp-includes/
 /index.php
-/license.txt
 /readme.html
 /wp-*.php
 /xmlrpc.php
