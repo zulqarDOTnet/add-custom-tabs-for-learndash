@@ -1,7 +1,5 @@
 # LearnDash LMS - Add Custom Tabs
 
-Contributors: zulqardotnet
-Donate link: https://www.fiverr.com/zulqar
 Tags: LearnDash, eLearning, LMS, education, learning
 Requires at least: 5.4
 Tested up to: 6.4.2
