@@ -1,5 +1,15 @@
 # LearnDash LMS - Add Custom Tabs
 
+Contributors: zulqardotnet
+Donate link: https://www.fiverr.com/zulqar
+Tags: LearnDash, eLearning, LMS, education, learning
+Requires at least: 5.4
+Tested up to: 6.4.2
+Requires PHP: 7.4
+Stable tag: 1.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
 This plugin adds custom tabs to LearnDash for courses/lessons/topics/quizzes and groups.
 
 ## Description
