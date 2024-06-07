@@ -1,4 +1,4 @@
-=== LearnDash LMS - Add Custom Tabs ===
+=== Add Custom Tabs for LearnDash LMS ===
 Contributors: zulqardotnet
 Donate link: https://www.fiverr.com/zulqar
 Tags: LearnDash, eLearning, LMS, education, learning

@@ -1,9 +1,10 @@
 <?php
 /*
-Plugin Name: LearnDash LMS - Add Custom Tabs
+Plugin Name: Add Custom Tabs for LearnDash LMS
 Description: This plugin adds custom tabs to LearnDash for courses/lessons/topics/quizzes and groups.
 Version: 1.0
-Author: zulqar.net@gmail.com
+Author: zulqar.net
+Author URI: https://github.com/zulqarDOTnet/add-custom-tabs-for-learndash
 */
 
 if ( !defined( 'ABSPATH' ) ) exit;
