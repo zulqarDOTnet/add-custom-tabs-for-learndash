@@ -36,7 +36,7 @@ It's a simple yet effective solution to optimize the LearnDash interface and ele
 
 == Changelog ==
 
-= 1.0 [2024-05-15] =
+= 1.0 [2024-06-07] =
 * Initial release
 
 == Upgrade Notice ==
