@@ -1,4 +1,4 @@
-# LearnDash LMS - Add Custom Tabs
+# Add Custom Tabs for LearnDash LMS
 
 Tags: LearnDash, eLearning, LMS, education, learning<br>
 Requires at least: 5.4<br>
