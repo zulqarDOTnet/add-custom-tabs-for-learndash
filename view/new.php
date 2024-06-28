@@ -1,5 +1,7 @@
+<?php if ( !defined( 'ABSPATH' ) ) exit; ?>
+
 <div class="wrap">
-    <h1><?php esc_attr_e( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ); ?></h1>
+    <h1><?php esc_attr_e( 'Add Custom Tabs for LearnDash LMS', 'zulqar.net' ); ?></h1>
 
     <form action="" method="post">
 
@@ -86,7 +88,7 @@
 
         <input type="hidden" name="field_id" value="0">
 
-        <?php wp_nonce_field( 'zulqar-net-lmsct' ); ?>
+        <?php wp_nonce_field( 'zctdlm_nonce' ); ?>
         <?php submit_button( __( 'Add New Tab', 'zulqar.net' ), 'primary', 'Sbumit' ); ?>
 
     </form>

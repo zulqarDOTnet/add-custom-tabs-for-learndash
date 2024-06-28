@@ -1,5 +1,7 @@
 <?php
 
+if ( !defined( 'ABSPATH' ) ) exit;
+
 /**
  * Get all tab
  *
@@ -7,8 +9,8 @@
  *
  * @return array
  */
-function learndash_zaddcustomtabs_get_all_tab( $args = array() ) {
-    global $wpdb;
+function zctdlm_get_all_tab( $args = array() ) {
+    global $wp_version, $wpdb;
 
     $defaults = array(
         'number'     => 10,
@@ -18,63 +20,82 @@ function learndash_zaddcustomtabs_get_all_tab( $args = array() ) {
     );
 
     $args      = wp_parse_args( $args, $defaults );
-    $cache_key = 'learndash_zaddcustomtabs-cache-default';
+    $cache_key = 'zctdlm-cache-default';
     $items     = wp_cache_get( $cache_key, 'zulqar.net' );
 
     $search = "";
-    if ( isset( $_REQUEST['_wpnonce'] ) && !empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'zulqar-net-lmsct' ) ) {
-        if ( isset($_POST['s']) ) {
-            $search = esc_attr( $_POST['s'] );
-        }
-    } elseif ( isset( $_REQUEST['_wpnonce'] ) )  {
+    if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['_wpnonce'] ) ) , 'zctdlm_nonce' ) ) {
         die( esc_attr( 'Security check', 'zulqar.net' ) );
     }
 
-    // phpcs:disable
-    if ( !empty($search) ) {
+    if ( isset($_POST['s']) ) {
+        $search = esc_html(sanitize_text_field($_POST['s']));
+    }
+
+    $ordered_by = sanitize_sql_orderby( $args['orderby'] . ' ' .  $args['order'] );
+
+    if ( ! empty( $search ) ) {
+        // phpcs:disable
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-        $query = $wpdb->prepare(
-            "SELECT * FROM `{$wpdb->prefix}learndash_zaddcustomtabs` WHERE (`title` LIKE %s OR `content` LIKE %s) ORDER BY ".sanitize_text_field($args['orderby'])." ".sanitize_text_field(strtoupper($args['order']))." LIMIT %d, %d",
-            '%' . $wpdb->esc_like($search) . '%',
-            '%' . $wpdb->esc_like($search) . '%',
-            intval($args['offset']),
-            intval($args['number'])
-        );
-        //if ( false === $items ) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-            $items = $wpdb->get_results($query);
-            wp_cache_set( $cache_key, $items, 'zulqar.net' );
-        //}
+        // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedIdentifierPlaceholder
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        if ( version_compare( $wp_version, '6.2', '<' ) ) {
+            $items = $wpdb->get_results( $wpdb->prepare(
+                "SELECT * FROM `{$wpdb->prefix}zctdlm` WHERE (`title` LIKE %s OR `content` LIKE %s) ORDER BY {$ordered_by} LIMIT %d, %d",
+                '%' . $wpdb->esc_like( $search ) . '%',
+                '%' . $wpdb->esc_like( $search ) . '%',
+                //$ordered_by,
+                intval( $args['offset'] ),
+                intval( $args['number'] )
+            ) );
+        } else {
+            $items = $wpdb->get_results( $wpdb->prepare(
+                "SELECT * FROM %i WHERE (%i LIKE %s OR %i LIKE %s) ORDER BY {$ordered_by} LIMIT %d, %d",
+                "{$wpdb->prefix}zctdlm",
+                "title",
+                '%' . $wpdb->esc_like( $search ) . '%',
+                "content",
+                '%' . $wpdb->esc_like( $search ) . '%',
+                //$ordered_by,
+                intval( $args['offset'] ),
+                intval( $args['number'] )
+            ) );
+        }
     } else {
-        $query = $wpdb->prepare(
-            "SELECT * FROM `{$wpdb->prefix}learndash_zaddcustomtabs` ORDER BY ".sanitize_text_field($args['orderby'])." ".sanitize_text_field(strtoupper($args['order']))." LIMIT %d, %d",
-            intval($args['offset']),
-            intval($args['number'])
-        );
-        //if ( false === $items ) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-            $items = $wpdb->get_results($query);
-            wp_cache_set( $cache_key, $items, 'zulqar.net' );
-        //}
+        if ( version_compare( $wp_version, '6.2', '<' ) ) {
+            $items = $wpdb->get_results( $wpdb->prepare(
+                "SELECT * FROM `{$wpdb->prefix}zctdlm` ORDER BY {$ordered_by} LIMIT %d, %d",
+                //$ordered_by,
+                intval( $args['offset'] ),
+                intval( $args['number'] )
+            ) );
+        } else {
+            $items = $wpdb->get_results( $wpdb->prepare(
+                "SELECT * FROM %i ORDER BY {$ordered_by} LIMIT %d, %d",
+                "{$wpdb->prefix}zctdlm",
+                //$ordered_by,
+                intval( $args['offset'] ),
+                intval( $args['number'] )
+            ) );
+        }
         // phpcs:enable
     }
 
+    wp_cache_set( $cache_key, $items, 'zulqar.net' );
+
     return $items;
 }
-
 
 /**
  * Fetch all tab from database
  *
  * @return array
  */
-function learndash_zaddcustomtabs_get_tab_count() {
+function zctdlm_get_tab_count() {
     global $wpdb;
 
     // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-    return (int) $wpdb->get_var( 'SELECT COUNT(*) FROM `' . $wpdb->prefix . 'learndash_zaddcustomtabs`' );
+    return (int) $wpdb->get_var( 'SELECT COUNT(*) FROM `' . $wpdb->prefix . 'zctdlm`' );
 }
 
 /**
@@ -84,11 +105,11 @@ function learndash_zaddcustomtabs_get_tab_count() {
  *
  * @return array
  */
-function learndash_zaddcustomtabs_get_tab( $id = 0 ) {
+function zctdlm_get_tab( $id = 0 ) {
     global $wpdb;
 
     // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-    return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `' . $wpdb->prefix . 'learndash_zaddcustomtabs` WHERE id = %d', $id ) );
+    return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `' . $wpdb->prefix . 'zctdlm` WHERE id = %d', $id ) );
 }
 
 /**
@@ -96,7 +117,7 @@ function learndash_zaddcustomtabs_get_tab( $id = 0 ) {
  *
  * @param array $args
  */
-function learndash_zaddcustomtabs_insert_tab( $args = array() ) {
+function zctdlm_insert_tab( $args = array() ) {
     global $wpdb;
 
     $defaults = array(
@@ -109,7 +130,7 @@ function learndash_zaddcustomtabs_insert_tab( $args = array() ) {
     );
 
     $args       = wp_parse_args( $args, $defaults );
-    $table_name = $wpdb->prefix . 'learndash_zaddcustomtabs';
+    $table_name = $wpdb->prefix . 'zctdlm';
 
     // some basic validation
     if ( empty( $args['title'] ) ) {

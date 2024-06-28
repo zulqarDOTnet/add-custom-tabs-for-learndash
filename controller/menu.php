@@ -1,8 +1,10 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) exit;
+
 /**
  * Admin Menu
  */
-class zulqarDOTnet_LMSCT_Admin_Menu {
+class ZCTDLM_Admin {
 
     /**
      * Kick-in the class
@@ -22,9 +24,9 @@ class zulqarDOTnet_LMSCT_Admin_Menu {
         if (!current_user_can('manage_options')) {
             return;
         }
-        $hook = add_menu_page( __( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ), __( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ), 'manage_options', 'zulqardotnet-lms-ct', array( $this, 'plugin_page' ), 'dashicons-groups', 3 );
+        $hook = add_menu_page( __( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ), __( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ), 'manage_options', 'zctdlm', array( $this, 'plugin_page' ), 'dashicons-groups', 3 );
         add_action( "load-$hook", [ $this, 'screen_option' ] );
-        add_submenu_page( 'zulqardotnet-lms-ct', __( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ), __( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ), 'manage_options', 'zulqardotnet-lms-ct', array( $this, 'plugin_page' ) );
+        add_submenu_page( 'zctdlm', __( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ), __( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ), 'manage_options', 'zctdlm', array( $this, 'plugin_page' ) );
     }
 
     /**
@@ -34,10 +36,11 @@ class zulqarDOTnet_LMSCT_Admin_Menu {
      */
     public function plugin_page()
     {
-        if ( isset( $_REQUEST['_wpnonce'] ) && !empty( $_REQUEST['_wpnonce'] ) && !wp_verify_nonce( $_REQUEST['_wpnonce'], 'zulqar-net-lmsct' ) ) {
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['_wpnonce'] ) ) , 'zctdlm_nonce' ) ) {
             die( esc_attr( 'Security check', 'zulqar.net' ) );
         }
-        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+
+        $action = isset( $_GET['action'] ) ? sanitize_text_field($_GET['action']) : 'list';
         $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
 
         switch ($action) {
@@ -54,14 +57,16 @@ class zulqarDOTnet_LMSCT_Admin_Menu {
                 break;
 
             case 'delete':
-                global $wpdb;
-                $table_name = $wpdb->prefix . 'learndash_zaddcustomtabs';
-                // phpcs:disable
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                $wpdb->query($wpdb->prepare( "DELETE FROM `$table_name` WHERE id= %d ", $id));
-                // phpcs:enable
-                echo "<script>location.replace('admin.php?page=zulqardotnet-lms-ct');</script>";
+                if($id > 0) {
+                    global $wpdb;
+                    $table_name = $wpdb->prefix . 'zctdlm';
+                    // phpcs:disable
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching
+                    $wpdb->delete($table_name, array('id' => $id), array('%d'));
+                    // phpcs:enable
+                }
+                echo "<script>location.replace('admin.php?page=zctdlm');</script>";
                 break;
 
             default:

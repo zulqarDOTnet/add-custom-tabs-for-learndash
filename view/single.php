@@ -1,7 +1,9 @@
-<div class="wrap">
-    <h1><?php esc_attr_e( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ); ?></h1>
+<?php if ( !defined( 'ABSPATH' ) ) exit; ?>
 
-    <?php $item = learndash_zaddcustomtabs_get_tab( $id ); ?>
+<div class="wrap">
+    <h1><?php esc_attr_e( 'Add Custom Tabs for LearnDash LMS', 'zulqar.net' ); ?></h1>
+
+    <?php $item = zctdlm_get_tab( $id ); ?>
 
         <table class="form-table">
             <tbody>
@@ -10,7 +12,7 @@
                         <label for="title"><?php esc_attr_e( 'Title', 'zulqar.net' ); ?></label>
                     </th>
                     <td>
-                        <?php echo esc_attr( $item->title ); ?>
+                        <?php echo esc_attr( wp_unslash($item->title) ); ?>
                     </td>
                 </tr>
                 <tr class="row-content">
@@ -18,7 +20,7 @@
                         <label for="content"><?php esc_attr_e( 'Content', 'zulqar.net' ); ?></label>
                     </th>
                     <td>
-                        <?php echo esc_textarea( $item->content ); ?>
+                        <?php echo wp_kses_post( wp_unslash($item->content) ); ?>
                     </td>
                 </tr>
                 <tr class="row-icon-name">

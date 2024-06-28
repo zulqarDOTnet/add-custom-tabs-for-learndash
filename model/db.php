@@ -1,12 +1,14 @@
 <?php
-function activate_myplugin() {
-	init_db_myplugin();
+if ( !defined( 'ABSPATH' ) ) exit;
+
+function ZCTDLM_ACTIVATE() {
+	ZCTDLM_INIT_DB();
 }
 
-function init_db_myplugin()
+function ZCTDLM_INIT_DB()
 {
 	global $wpdb;
-	$pluginTable = $wpdb->prefix . 'learndash_zaddcustomtabs';
+	$pluginTable = $wpdb->prefix . 'zctdlm';
 
     // phpcs:disable
     // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -35,6 +37,6 @@ function init_db_myplugin()
     // phpcs:enable
 }
 
-function deactivate_myplugin() {
+function ZCTDLM_DEACTIVATE() {
 	//
 }

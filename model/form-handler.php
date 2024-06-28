@@ -1,12 +1,14 @@
 <?php
 
+if ( !defined( 'ABSPATH' ) ) exit;
+
 /**
  * Handle the form submissions
  *
  * @package Package
  * @subpackage Sub Package
  */
-class Form_Handler {
+class ZCTDLM_Form_Handler {
 
     /**
      * Hook 'em all
@@ -25,8 +27,8 @@ class Form_Handler {
             return;
         }
 
-        if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'zulqar-net-lmsct' ) ) {
-            die( esc_attr( 'Are you cheating?', 'zulqar.net' ) );
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['_wpnonce'] ) ) , 'zctdlm_nonce' ) ) {
+            die( esc_attr( 'Security check', 'zulqar.net' ) );
         }
 
         if ( ! current_user_can( 'read' ) ) {
@@ -34,7 +36,7 @@ class Form_Handler {
         }
 
         $errors   = array();
-        $page_url = admin_url( 'admin.php?page=zulqardotnet-lms-ct' );
+        $page_url = admin_url( 'admin.php?page=zctdlm' );
         $field_id = isset( $_POST['field_id'] ) ? intval( $_POST['field_id'] ) : 0;
 
         $title = isset( $_POST['title'] ) ? sanitize_text_field( $_POST['title'] ) : '';
@@ -75,13 +77,13 @@ class Form_Handler {
         // New or edit?
         if ( ! $field_id ) {
 
-            $insert_id = learndash_zaddcustomtabs_insert_tab( $fields );
+            $insert_id = zctdlm_insert_tab( $fields );
 
         } else {
 
             $fields['id'] = $field_id;
 
-            $insert_id = learndash_zaddcustomtabs_insert_tab( $fields );
+            $insert_id = zctdlm_insert_tab( $fields );
         }
 
         if ( is_wp_error( $insert_id ) ) {
@@ -95,4 +97,4 @@ class Form_Handler {
     }
 }
 
-new Form_Handler();
+new ZCTDLM_Form_Handler();

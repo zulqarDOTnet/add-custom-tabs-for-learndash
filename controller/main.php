@@ -1,5 +1,7 @@
 <?php
 
+if ( !defined( 'ABSPATH' ) ) exit;
+
 if (!class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
     require_once(ABSPATH . 'wp-admin/includes/screen.php');
@@ -10,7 +12,7 @@ if (!class_exists('WP_List_Table')) {
 /**
  * List table class
  */
-class zulqarDOTnet_LMS_Custom_Tabs extends \WP_List_Table {
+class ZCTDLM_Table extends \WP_List_Table {
 
     function __construct() {
         parent::__construct( array(
@@ -88,10 +90,10 @@ class zulqarDOTnet_LMS_Custom_Tabs extends \WP_List_Table {
      */
     function column_title( $item ) {
         $actions           = array();
-        $actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=zulqardotnet-lms-ct&action=edit&id=' . $item->id . '&_wpnonce='.wp_create_nonce( 'zulqar-net-lmsct' ) ), $item->id, __( 'Edit this item', 'zulqar.net' ), __( 'Edit', 'zulqar.net' ) );
-        $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=zulqardotnet-lms-ct&action=delete&id=' . $item->id . '&_wpnonce='.wp_create_nonce( 'zulqar-net-lmsct' ) ), $item->id, __( 'Delete this item', 'zulqar.net' ), __( 'Delete', 'zulqar.net' ) );
+        $actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=zctdlm&action=edit&id=' . $item->id . '&_wpnonce='.wp_create_nonce( 'zctdlm_nonce' ) ), $item->id, __( 'Edit this item', 'zulqar.net' ), __( 'Edit', 'zulqar.net' ) );
+        $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=zctdlm&action=delete&id=' . $item->id . '&_wpnonce='.wp_create_nonce( 'zctdlm_nonce' ) ), $item->id, __( 'Delete this item', 'zulqar.net' ), __( 'Delete', 'zulqar.net' ) );
 
-        return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url( 'admin.php?page=zulqardotnet-lms-ct&action=view&id=' . $item->id . '&_wpnonce='.wp_create_nonce( 'zulqar-net-lmsct' ) ), $item->title, $this->row_actions( $actions ) );
+        return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url( 'admin.php?page=zctdlm&action=view&id=' . $item->id . '&_wpnonce='.wp_create_nonce( 'zctdlm_nonce' ) ), wp_unslash($item->title), $this->row_actions( $actions ) );
     }
 
     /**
@@ -125,24 +127,23 @@ class zulqarDOTnet_LMS_Custom_Tabs extends \WP_List_Table {
      * @return array
      */
     function process_bulk_action() {
-        if ( isset( $_POST['_wpnonce'] ) && !empty( $_POST['_wpnonce'] ) ) {
-            $nonce  = filter_input( INPUT_POST, '_wpnonce', FILTER_SANITIZE_STRING );
-            //$action = 'bulk-' . $this->_args['plural'];
-            $action = 'zulqar-net-lmsct';
-            if ( ! wp_verify_nonce( $nonce, $action ) )
-                die( esc_attr( 'Security check', 'zulqar.net' ) );
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['_wpnonce'] ) ) , 'zctdlm_nonce' ) ) {
+            die( esc_attr( 'Security check', 'zulqar.net' ) );
         }
+
         $action = $this->current_action();
         if( 'trash'===$action ) {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'learndash_zaddcustomtabs';
-            $delete_ids = esc_sql( $_POST['ids'] );
+            $table_name = $wpdb->prefix . 'zctdlm';
+            $delete_ids = is_array( $_POST['ids'] ) ? esc_sql($_POST['ids']) : [];
             foreach ( $delete_ids as $did ) {
-                // phpcs:disable
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                $wpdb->query($wpdb->prepare( "DELETE FROM `$table_name` WHERE id= %d ", $did));
-                // phpcs:enable
+                if( intval($did) > 0 ) {
+                    // phpcs:disable
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching
+                    $wpdb->delete($table_name, array('id' => $did), array('%d'));
+                    // phpcs:enable
+                }
             }
             wp_redirect( esc_url( add_query_arg() ) );
             exit;
@@ -186,11 +187,8 @@ class zulqarDOTnet_LMS_Custom_Tabs extends \WP_List_Table {
      */
     function prepare_items()
     {
-        if ( isset( $_POST['_wpnonce'] ) && !empty( $_POST['_wpnonce'] ) ) {
-            $nonce  = filter_input( INPUT_POST, '_wpnonce', FILTER_SANITIZE_STRING );
-            $action = 'zulqar-net-lmsct';
-            if ( ! wp_verify_nonce( $nonce, $action ) )
-                die( esc_attr( 'Security check', 'zulqar.net' ) );
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['_wpnonce'] ) ) , 'zctdlm_nonce' ) ) {
+            die( esc_attr( 'Security check', 'zulqar.net' ) );
         }
 
         $columns               = $this->get_columns();
@@ -211,14 +209,14 @@ class zulqarDOTnet_LMS_Custom_Tabs extends \WP_List_Table {
         );
 
         if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
-            $args['orderby'] = sanitize_text_field(strtolower($_REQUEST['orderby']));
-            $args['order']   = sanitize_text_field(strtoupper($_REQUEST['order']));
+            $args['orderby'] = sanitize_sql_orderby(strtolower(wp_unslash($_REQUEST['orderby'])));
+            $args['order']   = sanitize_text_field(strtoupper(wp_unslash($_REQUEST['order'])));
         }
 
-        $this->items  = learndash_zaddcustomtabs_get_all_tab( $args );
+        $this->items  = zctdlm_get_all_tab( $args );
 
         $this->set_pagination_args( array(
-            'total_items' => learndash_zaddcustomtabs_get_tab_count(),
+            'total_items' => zctdlm_get_tab_count(),
             'per_page'    => $per_page
         ) );
     }
@@ -231,7 +229,7 @@ add_filter(
             'offset' => 0,
             'number' => 999,
         );
-        $items = learndash_zaddcustomtabs_get_all_tab( $args );
+        $items = zctdlm_get_all_tab( $args );
         if (is_array($items) && !empty($items)) {
             foreach ($items as $index => $tab) {
                 if ( isset($tab->title) && isset($tab->content) && !isset($tabs[$tab->title]) && $tab->status == 1 ) {
@@ -254,8 +252,8 @@ add_filter(
                     if($show) {
                         $tabs[$tab->title] = array(
                             'id'      => $index,
-                            'label'   => $tab->title,
-                            'content' => $tab->content,
+                            'label'   => wp_unslash($tab->title),
+                            'content' => wp_kses_post(wp_unslash($tab->content)),
                             'icon'    => $tab->icon_name
                         );
                     }

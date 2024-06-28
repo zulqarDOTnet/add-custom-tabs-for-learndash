@@ -1,7 +1,9 @@
-<div class="wrap">
-    <h1><?php esc_attr_e( 'LearnDash LMS - Add Custom Tabs', 'zulqar.net' ); ?></h1>
+<?php if ( !defined( 'ABSPATH' ) ) exit; ?>
 
-    <?php $item = learndash_zaddcustomtabs_get_tab( $id ); ?>
+<div class="wrap">
+    <h1><?php esc_attr_e( 'Add Custom Tabs for LearnDash LMS', 'zulqar.net' ); ?></h1>
+
+    <?php $item = zctdlm_get_tab( $id ); ?>
 
     <form action="" method="post">
 
@@ -12,7 +14,7 @@
                         <label for="title"><?php esc_attr( 'Title', 'zulqar.net' ); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="title" id="title" class="regular-text" placeholder="<?php echo esc_attr( '', '' ); ?>" value="<?php echo esc_attr( $item->title ); ?>" required="required" />
+                        <input type="text" name="title" id="title" class="regular-text" placeholder="<?php echo esc_attr( '', '' ); ?>" value="<?php echo esc_attr( wp_unslash($item->title) ); ?>" required="required" />
                     </td>
                 </tr>
                 <tr class="row-content">
@@ -21,7 +23,7 @@
                     </th>
                     <td>
                         <?php
-                            $content   = $item->content;
+                            $content   = wp_unslash($item->content);
                             $editor_id = 'content';
                             wp_editor( $content, $editor_id );
                         ?>
@@ -88,7 +90,7 @@
 
         <input type="hidden" name="field_id" value="<?php echo esc_attr( $item->id ); ?>">
 
-        <?php wp_nonce_field( 'zulqar-net-lmsct' ); ?>
+        <?php wp_nonce_field( 'zctdlm_nonce' ); ?>
         <?php submit_button( __( 'Update', 'zulqar.net' ), 'primary', 'Sbumit' ); ?>
 
     </form>
