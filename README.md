@@ -2,7 +2,7 @@
 
 Tags: LearnDash, eLearning, LMS, education, learning<br>
 Requires at least: 5.4<br>
-Tested up to: 6.4.2<br>
+Tested up to: 6.4<br>
 Requires PHP: 7.4<br>
 Stable tag: 1.0<br>
 License: GPLv3<br>
