@@ -1,8 +1,8 @@
 # Add Custom Tabs for LearnDash LMS
 
 Tags: LearnDash, eLearning, LMS, education, learning<br>
-Requires at least: 5.4<br>
-Tested up to: 6.5.5<br>
+Requires at least: 6.4<br>
+Tested up to: 6.5<br>
 Requires PHP: 7.4<br>
 Stable tag: 1.0<br>
 License: GPLv3<br>
