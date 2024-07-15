@@ -135,7 +135,7 @@ class ZCTDLM_Table extends \WP_List_Table {
         if( 'trash'===$action ) {
             global $wpdb;
             $table_name = $wpdb->prefix . 'zctdlm';
-            $delete_ids = is_array( $_POST['ids'] ) ? esc_sql($_POST['ids']) : [];
+            $delete_ids = is_array( $_POST['ids'] ) ? array_map('sanitize_text_field', $_POST['ids']) : [];
             foreach ( $delete_ids as $did ) {
                 if( intval($did) > 0 ) {
                     // phpcs:disable

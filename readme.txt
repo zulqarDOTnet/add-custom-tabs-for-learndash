@@ -2,10 +2,10 @@
 Contributors: zulqardotnet
 Donate link: https://www.fiverr.com/zulqar
 Tags: LearnDash, eLearning, LMS, education, learning
-Requires at least: 5.4
-Tested up to: 6.4
+Requires at least: 6.4
+Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,8 +21,15 @@ Whether you're an educator looking to streamline your course layout, or a studen
 It's a simple yet effective solution to optimize the LearnDash interface and elevate the e-learning experience.
 
 == Installation ==
-1. Ensure that your installation of WordPress is using PHP 7.2 or higher and LearnDash 3.6 or higher.
-2. Upload the contents of the plugin zip file to the `/wp-content/plugins/` directory.
+
+= Minimum Requirements =
+
+* LearnDash 3.6 or higher
+* PHP 7.4 or greater is required (PHP 8.0 or greater is recommended)
+* MySQL 5.6 or greater, OR MariaDB version 10.1 or greater, is required
+
+1. Ensure that LearnDash is properly installed and configured.
+2. Upload the contents of the plugin zip file to the '/wp-content/plugins/' directory.
 3. Activate the plugin through the Plugins menu in WordPress.
 
 == Screenshots ==
@@ -36,7 +43,12 @@ It's a simple yet effective solution to optimize the LearnDash interface and ele
 
 == Changelog ==
 
+= 1.0.1 [2024-07-15] =
+
+- Small fixes
+
 = 1.0 [2024-06-28] =
-* Initial release
+
+- Initial release
 
 == Upgrade Notice ==

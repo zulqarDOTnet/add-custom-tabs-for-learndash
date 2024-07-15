@@ -3,8 +3,8 @@
  * Plugin Name:       Add Custom Tabs for LearnDash LMS
  * Plugin URI:        https://wordpress.org/plugins/add-custom-tabs-for-learndash
  * Description:       This plugin adds custom tabs to LearnDash for courses/lessons/topics/quizzes and groups.
- * Version:           1.0
- * Requires at least: 5.4
+ * Version:           1.0.1
+ * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            Zulqarnain Zafar
  * Author URI:        https://zulqar.net/
